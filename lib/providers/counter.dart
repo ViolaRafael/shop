@@ -11,7 +11,7 @@ class CounterState {
     return old.value != _value;
   }
 }
-
+/// the class bellow is apart of a practice of Inherited Widgets it doesn't add anything to the actual app
 class CounterProvider extends InheritedWidget {
   final CounterState state = CounterState();
 
