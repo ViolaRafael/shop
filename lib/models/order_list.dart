@@ -1,11 +1,10 @@
 import 'dart:math';
-
 import 'package:flutter/material.dart';
 import 'cart.dart';
 import 'order.dart';
 
 class OrderList with ChangeNotifier {
-  List<Order> _items = [];
+  final List<Order> _items = [];
 
   List<Order> get items {
     return [..._items];
@@ -15,7 +14,8 @@ class OrderList with ChangeNotifier {
     return _items.length;
   }
 
-  void addOrder(Cart cart) {
+  /// code bellow is used to add the cart's item list to the order page
+  void addOrder(Cart cart) { // add documentation
     _items.insert(
       0,
       Order(
