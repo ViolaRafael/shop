@@ -59,6 +59,30 @@ class Cart with ChangeNotifier {
     notifyListeners();
   }
 
+  /// if select product is already in the cart, decrease quantity of product by 1;
+  /// otherwise remove selected product from cart
+  void removeSingleItem(String productId) {
+    if(!_items.containsKey(productId)) {
+      return;
+    }
+
+    if(_items[productId]?.quantity == 1) {
+      _items.remove(productId);
+    } else {
+      _items.update(
+        productId,
+            (existingItem) => CartItem(
+          id: existingItem.id,
+          productId: existingItem.productId,
+          name: existingItem.name,
+          quantity: existingItem.quantity - 1,
+          price: existingItem.price,
+        ),
+      );
+    }
+    notifyListeners();
+  }
+
   /// clears list of full items, it's used after cart's products are saved in orders
   void clear() {
     _items = {};
