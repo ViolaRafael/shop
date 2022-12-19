@@ -15,8 +15,10 @@ class ProductList with ChangeNotifier {
   }
 }
 
-/// this commented code bellow is the previous filter
+/// the commented code bellow is the previous filter
 /// that reloaded the entire screen
+/// it was changed to save performance and it stayed as
+/// a comment to be a reminder of this change
 // bool _showFavoriteOnly = false;
 //
 // List<Product> get items {
