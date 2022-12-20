@@ -12,7 +12,7 @@ enum FilterOptions {
 }
 
 class ProductsOverviewPage extends StatefulWidget {
-  ProductsOverviewPage({Key? key}) : super(key: key);
+  const ProductsOverviewPage({Key? key}) : super(key: key);
 
   @override
   State<ProductsOverviewPage> createState() => _ProductsOverviewPageState();
@@ -24,18 +24,18 @@ class _ProductsOverviewPageState extends State<ProductsOverviewPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Minha Loja'),
+        title: const Text('Minha Loja'),
         actions: [
           PopupMenuButton(
-            icon: Icon(Icons.more_vert),
+            icon: const Icon(Icons.more_vert),
             itemBuilder: (_) => [
-              PopupMenuItem(
-                child: Text('Somente Favoritos'),
+              const PopupMenuItem(
                 value: FilterOptions.Favorite,
+                child: Text('Somente Favoritos'),
               ),
-              PopupMenuItem(
-                child: Text('Todos'),
+              const PopupMenuItem(
                 value: FilterOptions.All,
+                child: Text('Todos'),
               ),
             ],
             onSelected: (FilterOptions selectedValue) {
@@ -53,7 +53,7 @@ class _ProductsOverviewPageState extends State<ProductsOverviewPage> {
               onPressed: () {
                 Navigator.of(context).pushNamed(AppRoutes.CART);
               },
-              icon: Icon(Icons.shopping_cart),
+              icon: const Icon(Icons.shopping_cart),
             ),
             builder: (ctx, cart, child) => Badge(
               value: cart.itemsCount.toString(),
@@ -63,7 +63,7 @@ class _ProductsOverviewPageState extends State<ProductsOverviewPage> {
         ],
       ),
       body: ProductGrid(_showFavoriteOnly),
-      drawer: AppDrawer(),
+      drawer: const AppDrawer(),
     );
   }
 }

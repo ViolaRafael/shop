@@ -12,7 +12,7 @@ class _ProductFormPageState extends State<ProductFormPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Formulário de Produto'),
+        title: const Text('Formulário de Produto'),
       ),
       body: Padding(
         padding: const EdgeInsets.all(15),
@@ -20,7 +20,7 @@ class _ProductFormPageState extends State<ProductFormPage> {
           child: ListView(
             children: [
               TextFormField(
-                decoration: InputDecoration(labelText: 'Nome'),
+                decoration: const InputDecoration(labelText: 'Nome'),
                 textInputAction: TextInputAction.next,
               ),
             ],
