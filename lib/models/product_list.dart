@@ -6,8 +6,8 @@ import 'package:shop/data/dummy_data.dart';
 import 'package:shop/models/product.dart';
 
 class ProductList with ChangeNotifier {
-  final _baseUrl =
-      'https://shop-a9cbf-default-rtdb.europe-west1.firebasedatabase.app';
+  final _url =
+      'https://shop-a9cbf-default-rtdb.europe-west1.firebasedatabase.app/products.json';
   final List<Product> _items = dummyProducts;
 
   List<Product> get items => [..._items];
@@ -16,6 +16,11 @@ class ProductList with ChangeNotifier {
 
   int get itemsCount {
     return _items.length;
+  }
+
+  Future<void> loadProducts() async {
+    final response = await http.get(Uri.parse(_url));
+    print(jsonDecode(response.body));
   }
 
   /// checks to see if product submitted(_submitForm()) already had an id and sends product information
@@ -42,7 +47,7 @@ class ProductList with ChangeNotifier {
   // async requires the method to be Future
   Future<void> addProduct(Product product) async {
     final response = await http.post(
-      Uri.parse('$_baseUrl/products.json'),
+      Uri.parse(_url),
       body: jsonEncode(
         {
           "name": product.name,
