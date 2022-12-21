@@ -20,7 +20,7 @@ class ProductList with ChangeNotifier {
 
   /// checks to see if product submitted(_submitForm()) already had an id and sends product information
   /// if it has an Id it updates products' details otherwise it creates a new one
-  void saveProduct(Map<String, Object> data) {
+  Future<void> saveProduct(Map<String, Object> data) {
     bool hasId = data['id'] != null;
 
     final product = Product(
@@ -32,14 +32,14 @@ class ProductList with ChangeNotifier {
     );
 
     if (hasId) {
-      updateProduct(product);
+      return updateProduct(product);
     } else {
-      addProduct(product);
+      return addProduct(product);
     }
   }
 
   /// using product's information from saveProduct it creates a new product
-  void addProduct(Product product) {
+  Future<void> addProduct(Product product) {
     final future = http.post(
       Uri.parse('$_baseUrl/products.json'),
       body: jsonEncode(
@@ -53,7 +53,7 @@ class ProductList with ChangeNotifier {
       ),
     );
 
-    future.then((response) {
+    return future.then<void>((response) {
       final id = jsonDecode(response.body)['name'];
       _items.add(Product(
         id: id,
@@ -69,12 +69,14 @@ class ProductList with ChangeNotifier {
 
   /// using product's information from saveProduct it changes the product's details using the id to identify
   /// it's index
-  void updateProduct(Product product) {
+  Future<void> updateProduct(Product product) {
     int index = _items.indexWhere((p) => p.id == product.id);
     if (index >= 0) {
       _items[index] = product;
       notifyListeners();
     }
+
+    return Future.value();
   }
 
   /// when user presses the yes button when trying to delete a product this function is called
