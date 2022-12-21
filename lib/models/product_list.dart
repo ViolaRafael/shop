@@ -41,7 +41,7 @@ class ProductList with ChangeNotifier {
   /// using product's information from saveProduct it creates a new product
   Future<void> addProduct(Product product) {
     final future = http.post(
-      Uri.parse('$_baseUrl/products.json'),
+      Uri.parse('$_baseUrl/products'),
       body: jsonEncode(
         {
           "name": product.name,
