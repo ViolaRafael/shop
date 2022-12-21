@@ -6,7 +6,8 @@ import 'package:shop/data/dummy_data.dart';
 import 'package:shop/models/product.dart';
 
 class ProductList with ChangeNotifier {
-  final _baseUrl = 'https://shop-a9cbf-default-rtdb.europe-west1.firebasedatabase.app';
+  final _baseUrl =
+      'https://shop-a9cbf-default-rtdb.europe-west1.firebasedatabase.app';
   final List<Product> _items = dummyProducts;
 
   List<Product> get items => [..._items];
@@ -39,35 +40,48 @@ class ProductList with ChangeNotifier {
 
   /// using product's information from saveProduct it creates a new product
   void addProduct(Product product) {
-    http.post(
+    final future = http.post(
       Uri.parse('$_baseUrl/products.json'),
-      body: jsonEncode({
-        "name" : product.name,
-        "description" : product.description,
-        "price" : product.price,
-        "imageUrl" : product.imageUrl,
-        "isFavorite" : product.isFavorite,
-      })
+      body: jsonEncode(
+        {
+          "name": product.name,
+          "description": product.description,
+          "price": product.price,
+          "imageUrl": product.imageUrl,
+          "isFavorite": product.isFavorite,
+        },
+      ),
     );
 
-    _items.add(product);
-    notifyListeners();
+    future.then((response) {
+      final id = jsonDecode(response.body)['name'];
+      _items.add(Product(
+        id: id,
+        name: product.name,
+        description: product.description,
+        price: product.price,
+        imageUrl: product.imageUrl,
+        isFavorite: product.isFavorite,
+      ));
+      notifyListeners();
+    });
   }
 
   /// using product's information from saveProduct it changes the product's details using the id to identify
   /// it's index
   void updateProduct(Product product) {
     int index = _items.indexWhere((p) => p.id == product.id);
-    if(index >= 0) {
+    if (index >= 0) {
       _items[index] = product;
       notifyListeners();
     }
   }
+
   /// when user presses the yes button when trying to delete a product this function is called
   /// passing the product's id
   void removeProduct(Product product) {
     int index = _items.indexWhere((p) => p.id == product.id);
-    if(index >= 0) {
+    if (index >= 0) {
       _items.removeWhere((p) => p.id == product.id);
       notifyListeners();
     }
