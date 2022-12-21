@@ -14,6 +14,8 @@ class ProductList with ChangeNotifier {
     return _items.length;
   }
 
+  /// checks to see if product submitted(_submitForm()) already had an id and sends product information
+  /// if it has an Id it updates products' details otherwise it creates a new one
   void saveProduct(Map<String, Object> data) {
     bool hasId = data['id'] != null;
 
@@ -32,11 +34,14 @@ class ProductList with ChangeNotifier {
     }
   }
 
+  /// using product's information from saveProduct it creates a new product
   void addProduct(Product product) {
     _items.add(product);
     notifyListeners();
   }
 
+  /// using product's information from saveProduct it changes the product's details using the id to identify
+  /// it's index
   void updateProduct(Product product) {
     int index = _items.indexWhere((p) => p.id == product.id);
     if(index >= 0) {
@@ -44,6 +49,8 @@ class ProductList with ChangeNotifier {
       notifyListeners();
     }
   }
+  /// when user presses the yes button when trying to delete a product this function is called
+  /// passing the product's id
   void removeProduct(Product product) {
     int index = _items.indexWhere((p) => p.id == product.id);
     if(index >= 0) {
