@@ -17,6 +17,7 @@ class ProductList with ChangeNotifier {
     return _items.length;
   }
 
+  /// function that checks if there's new products added
   Future<void> loadProducts() async {
     _items.clear();
     final response = await http.get(Uri.parse('${Constants.PRODUCT_BASE_URL}.json'));

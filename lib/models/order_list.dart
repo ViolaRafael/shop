@@ -17,6 +17,7 @@ class OrderList with ChangeNotifier {
     return _items.length;
   }
 
+  /// gets saved orders' information and loads them to the user
   Future<void> loadOrders() async {
     _items.clear();
     final response =
@@ -44,7 +45,7 @@ class OrderList with ChangeNotifier {
     notifyListeners();
   }
 
-  /// code bellow is used to add the cart's item list to the order page
+  /// code bellow is used to add the cart's item list to the order database
   Future<void> addOrder(Cart cart) async {
     final date = DateTime.now();
     final response = await http.post(
