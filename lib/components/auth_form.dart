@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import '../models/auth.dart';
 
-enum AuthMode { Signup, Login }
+enum AuthMode { signup, login }
 
 class AuthForm extends StatefulWidget {
   const AuthForm({Key? key}) : super(key: key);
@@ -13,40 +15,45 @@ class _AuthFormState extends State<AuthForm> {
   final _passwordController = TextEditingController();
   final _formKey = GlobalKey<FormState>();
   bool _isLoading = false;
-  AuthMode _authMode = AuthMode.Login;
-  Map<String, String> _authData = {
+  AuthMode _authMode = AuthMode.login;
+  final Map<String, String> _authData = {
     'email': '',
     'password': '',
   };
 
-  bool _isLogin() => _authMode == AuthMode.Login;
-  bool _isSignUp() => _authMode == AuthMode.Signup;
+  bool _isLogin() => _authMode == AuthMode.login;
+  bool _isSignUp() => _authMode == AuthMode.signup;
 
   void _switchAuthMode() {
     setState(() {
       if (_isLogin()) {
-        _authMode = AuthMode.Signup;
+        _authMode = AuthMode.signup;
       } else {
-        _authMode = AuthMode.Login;
+        _authMode = AuthMode.login;
       }
     });
   }
 
-  void _submit() {
+  Future<void> _submit() async {
     final isValid = _formKey.currentState?.validate() ?? false;
 
-    if(!isValid) {
+    if (!isValid) {
       return;
     }
 
     setState(() => _isLoading = true);
 
     _formKey.currentState?.save();
+    Auth auth = Provider.of(context, listen: false);
 
-    if(_isLogin()) {
+    if (_isLogin()) {
       // Login
-    }else {
+    } else {
       // Criar conta
+      await auth.signup(
+        _authData['email']!,
+        _authData['password']!,
+      );
     }
 
     setState(() => _isLoading = false);
@@ -109,8 +116,8 @@ class _AuthFormState extends State<AuthForm> {
                         },
                 ),
               const SizedBox(height: 20),
-              if (_isLoading = true)
-                CircularProgressIndicator()
+              if (_isLoading)
+                 const CircularProgressIndicator()
               else
                 ElevatedButton(
                   onPressed: _submit,
@@ -119,11 +126,11 @@ class _AuthFormState extends State<AuthForm> {
                           borderRadius: BorderRadius.circular(30)),
                       padding: const EdgeInsets.symmetric(
                           horizontal: 30, vertical: 8)),
-                  child: Text(_authMode == AuthMode.Login
+                  child: Text(_authMode == AuthMode.login
                       ? 'Iniciar Sessão'
                       : 'Criar Conta'),
                 ),
-              Spacer(),
+              const Spacer(),
               TextButton(
                 onPressed: _switchAuthMode,
                 child: Text(
