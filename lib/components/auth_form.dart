@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:shop/exceptions/auth_exception.dart';
 import '../models/auth.dart';
 
 enum AuthMode { signup, login }
@@ -34,6 +35,22 @@ class _AuthFormState extends State<AuthForm> {
     });
   }
 
+  void _showErrorDialog(String msg) {
+    showDialog(
+      context: context,
+      builder: (ctx) => AlertDialog(
+        title: const Text('Ocorreu um erro'),
+        content: Text(msg),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.of(context).pop(),
+            child: const Text('Fechar'),
+          ),
+        ],
+      ),
+    );
+  }
+
   Future<void> _submit() async {
     final isValid = _formKey.currentState?.validate() ?? false;
 
@@ -46,18 +63,24 @@ class _AuthFormState extends State<AuthForm> {
     _formKey.currentState?.save();
     Auth auth = Provider.of(context, listen: false);
 
-    if (_isLogin()) {
-      /// Login
-      await auth.login(
-        _authData['email']!,
-        _authData['password']!,
-      );
-    } else {
-      /// Criar conta
-      await auth.signup(
-        _authData['email']!,
-        _authData['password']!,
-      );
+    try {
+      if (_isLogin()) {
+        /// Login
+        await auth.login(
+          _authData['email']!,
+          _authData['password']!,
+        );
+      } else {
+        /// Criar conta
+        await auth.signup(
+          _authData['email']!,
+          _authData['password']!,
+        );
+      }
+    } on AuthException catch (error) {
+      _showErrorDialog(error.toString());
+    }catch(error) {
+      _showErrorDialog('Aconteceu um erro inesperado');
     }
 
     setState(() => _isLoading = false);
@@ -121,7 +144,7 @@ class _AuthFormState extends State<AuthForm> {
                 ),
               const SizedBox(height: 20),
               if (_isLoading)
-                 const CircularProgressIndicator()
+                const CircularProgressIndicator()
               else
                 ElevatedButton(
                   onPressed: _submit,
