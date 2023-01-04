@@ -27,11 +27,7 @@ class _AuthFormState extends State<AuthForm> {
 
   void _switchAuthMode() {
     setState(() {
-      if (_isLogin()) {
-        _authMode = AuthMode.signup;
-      } else {
-        _authMode = AuthMode.login;
-      }
+      _authMode = _isLogin() ? AuthMode.signup : AuthMode.login;
     });
   }
 
