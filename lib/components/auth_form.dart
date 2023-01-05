@@ -48,8 +48,6 @@ class _AuthFormState extends State<AuthForm>
         curve: Curves.linear,
       ),
     );
-
-    _heightAnimation?.addListener(() => setState(() {}));
   }
 
   @override
@@ -127,10 +125,14 @@ class _AuthFormState extends State<AuthForm>
     return Card(
       elevation: 8,
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
-      child: Container(
-        padding: const EdgeInsets.all(16),
-        height: _heightAnimation?.value.height ?? (_isLogin() ? 310 : 400),
-        width: deviceSize.width * 0.75,
+      child: AnimatedBuilder(
+        animation: _heightAnimation!,
+        builder:  (ctx, childForm) => Container(
+          padding: const EdgeInsets.all(16),
+          height: _heightAnimation?.value.height ?? (_isLogin() ? 310 : 400),
+          width: deviceSize.width * 0.75,
+          child: childForm,
+        ),
         child: Form(
           key: _formKey,
           child: Column(
@@ -170,12 +172,12 @@ class _AuthFormState extends State<AuthForm>
                   validator: _isLogin()
                       ? null
                       : (_password) {
-                          final password = _password ?? '';
-                          if (password != _passwordController.text) {
-                            return 'As palavras-passe não coincidem.';
-                          }
-                          return null;
-                        },
+                    final password = _password ?? '';
+                    if (password != _passwordController.text) {
+                      return 'As palavras-passe não coincidem.';
+                    }
+                    return null;
+                  },
                 ),
               const SizedBox(height: 20),
               if (_isLoading)
