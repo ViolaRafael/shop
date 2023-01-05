@@ -28,7 +28,6 @@ class _AuthFormState extends State<AuthForm>
   Animation<Offset>? _slideAnimation;
 
   bool _isLogin() => _authMode == AuthMode.login;
-  // bool _isSignUp() => _authMode == AuthMode.signup;
 
   @override
   void initState() {
@@ -140,7 +139,6 @@ class _AuthFormState extends State<AuthForm>
       child: AnimatedContainer(
           padding: const EdgeInsets.all(16),
           height: _isLogin() ? 310 : 400,
-          //height: _heightAnimation?.value.height ?? (_isLogin() ? 310 : 400),
           width: deviceSize.width * 0.75,
           duration: const Duration(milliseconds: 300),
           curve: Curves.easeIn,
@@ -176,7 +174,7 @@ class _AuthFormState extends State<AuthForm>
               ),
                 AnimatedContainer(
                   constraints: BoxConstraints(
-                    minHeight: _isLogin()? 0: 60,
+                    minHeight: _isLogin()? 0 : 60,
                     maxHeight: _isLogin()? 0 : 120,
                   ),
                   duration: const Duration(milliseconds: 300),
