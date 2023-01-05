@@ -51,7 +51,7 @@ class _AuthFormState extends State<AuthForm>
 
     _slideAnimation = Tween<Offset>(
       begin: Offset(0, -1.5),
-      end:  Offset(0, 0),
+      end: Offset(0, 0),
     ).animate(
       CurvedAnimation(
         parent: _controller!,
@@ -59,7 +59,6 @@ class _AuthFormState extends State<AuthForm>
       ),
     );
   }
-
 
   @override
   void dispose() {
@@ -137,12 +136,12 @@ class _AuthFormState extends State<AuthForm>
       elevation: 8,
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
       child: AnimatedContainer(
-          padding: const EdgeInsets.all(16),
-          height: _isLogin() ? 310 : 400,
-          width: deviceSize.width * 0.75,
-          duration: const Duration(milliseconds: 300),
-          curve: Curves.easeIn,
-          child: Form(
+        padding: const EdgeInsets.all(16),
+        height: _isLogin() ? 310 : 400,
+        width: deviceSize.width * 0.75,
+        duration: const Duration(milliseconds: 300),
+        curve: Curves.easeIn,
+        child: Form(
           key: _formKey,
           child: Column(
             children: [
@@ -172,35 +171,35 @@ class _AuthFormState extends State<AuthForm>
                   return null;
                 },
               ),
-                AnimatedContainer(
-                  constraints: BoxConstraints(
-                    minHeight: _isLogin()? 0 : 60,
-                    maxHeight: _isLogin()? 0 : 120,
-                  ),
-                  duration: const Duration(milliseconds: 300),
-                  curve: Curves.linear,
-                  child: FadeTransition(
-                    opacity: _opacityAnimation!,
-                    child: SlideTransition(
-                      position: _slideAnimation!,
-                      child: TextFormField(
-                        decoration: const InputDecoration(
-                            labelText: 'Confirmar Palavra-passe'),
-                        keyboardType: TextInputType.emailAddress,
-                        obscureText: true,
-                        validator: _isLogin()
-                            ? null
-                            : (_password) {
-                          final password = _password ?? '';
-                          if (password != _passwordController.text) {
-                            return 'As palavras-passe não coincidem.';
-                          }
-                          return null;
-                        },
-                      ),
+              AnimatedContainer(
+                constraints: BoxConstraints(
+                  minHeight: _isLogin() ? 0 : 60,
+                  maxHeight: _isLogin() ? 0 : 120,
+                ),
+                duration: const Duration(milliseconds: 300),
+                curve: Curves.linear,
+                child: FadeTransition(
+                  opacity: _opacityAnimation!,
+                  child: SlideTransition(
+                    position: _slideAnimation!,
+                    child: TextFormField(
+                      decoration: const InputDecoration(
+                          labelText: 'Confirmar Palavra-passe'),
+                      keyboardType: TextInputType.emailAddress,
+                      obscureText: true,
+                      validator: _isLogin()
+                          ? null
+                          : (_password) {
+                              final password = _password ?? '';
+                              if (password != _passwordController.text) {
+                                return 'As palavras-passe não coincidem.';
+                              }
+                              return null;
+                            },
                     ),
                   ),
                 ),
+              ),
               const SizedBox(height: 20),
               if (_isLoading)
                 const CircularProgressIndicator()
