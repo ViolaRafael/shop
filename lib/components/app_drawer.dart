@@ -30,6 +30,7 @@ class AppDrawer extends StatelessWidget {
             title: const Text('Pedidos'),
             onTap: () {
               Navigator.of(context).pushReplacementNamed(AppRoutes.ORDERS);
+              //Navigator.of(context).pushReplacement(CustomRoute(builder: (ctx) => const OrdersPage()));
             },
           ),
           const Divider(),
@@ -46,7 +47,8 @@ class AppDrawer extends StatelessWidget {
             title: const Text('Log out'),
             onTap: () {
               Provider.of<Auth>(context, listen: false).logout();
-              Navigator.of(context).pushReplacementNamed(AppRoutes.AUTH_OR_HOME);
+              Navigator.of(context)
+                  .pushReplacementNamed(AppRoutes.AUTH_OR_HOME);
             },
           ),
         ],
